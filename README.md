@@ -1,11 +1,11 @@
-# Get started
+# STEP ONE : Get started
 
 1. Clone the repo.
 2. Install deps with yarn `yarn` or npm `npm install`
 3. Start hardhat `npx hardhat node --watch`
 
 ```text
-It runs up a Hardhat node, compile contracts, generates typescript interfaces, creates React context and instantiates your contract instances and factories with frontend provider.
+It runs a Hardhat node, compiles contracts, generates typescript interfaces, creates React context and instantiates your contract instances and factories with frontend provider.
 ```
 
 4. Open up a new terminal
@@ -34,7 +34,7 @@ Ensure you are using RPC to http://localhost:8545.
 
 You may also need to set the chainID to 31337 if you are using Hardhat blockchain development node.
 
-## Invalid nonce.
+# Common error: Invalid nonce.
 
 ```bash
 eth_sendRawTransaction
@@ -42,3 +42,17 @@ eth_sendRawTransaction
 ```
 
 Reset your account in Metamask.
+
+
+## STEP TWO: Make the changes required to get the app working, and any improvements you would like  
+
+
+## STEP THREE: DONE? 
+
+1. zip up your work:
+
+```bash
+git archive --format=zip --output project.zip HEAD
+```
+
+2. Email it to your contact at Yield.
