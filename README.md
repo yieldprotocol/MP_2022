@@ -1,4 +1,4 @@
-# STEP ONE : Get started
+## STEP ONE : Get started
 
 1. Clone the repo.
 2. Install deps with yarn `yarn` or npm `npm install`
@@ -34,7 +34,7 @@ Ensure you are using RPC to http://localhost:8545.
 
 You may also need to set the chainID to 31337 if you are using Hardhat blockchain development node.
 
-# Common error: Invalid nonce.
+### Common error: Invalid nonce.
 
 ```bash
 eth_sendRawTransaction
