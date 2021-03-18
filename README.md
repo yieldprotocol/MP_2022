@@ -1,4 +1,4 @@
-## STEP ONE : Get started
+## Get started
 
 1. Clone the repo.
 2. Install deps with yarn `yarn` or npm `npm install`
@@ -34,6 +34,7 @@ Ensure you are using RPC to http://localhost:8545.
 
 You may also need to set the chainID to 31337 if you are using Hardhat blockchain development node.
 
+
 ### Common error: Invalid nonce.
 
 ```bash
@@ -41,13 +42,16 @@ eth_sendRawTransaction
   Invalid nonce. Expected X but got X.
 ```
 
-Reset your account in Metamask.
+Solution: Reset your account in Metamask.
 
 
-## STEP TWO: Make the changes required to get the app working, and any improvements you would like  
+## Develop  
+
+Make the changes that are required to get the app working smoothly, and any improvements you would like to add. 
+Use any tools/packages you are comfortable with. Feel free to show off your skill set!
 
 
-## STEP THREE: DONE? 
+## Done? 
 
 1. zip up your work:
 
