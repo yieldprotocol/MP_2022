@@ -7,8 +7,10 @@ import { VicsClaim } from "./components/VicsClaim";
 import Step1 from "./components/Step1";
 import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";
-import { ethers } from "ethers";
 import Step4 from "./components/Step4";
+import Step5 from "./components/Step5";
+import Step6 from "./components/Step6";
+import { ethers } from "ethers";
 const provider = new ethers.providers.JsonRpcProvider();
 
 function App() {
@@ -111,23 +113,8 @@ function App() {
                 Working with ERC20 Tokens:
                 <Step3 provider={provider} />
                 <Step4 provider={provider} />
-                <li>
-                  <p>Approve token transfers out of your account</p>
-
-                  <p style={{ fontSize: "14px" }}>
-                    <strong>Hey,... VIC IS MAD!!! </strong> She wants some of
-                    her TST back. That's fine - it's not worth much anyway. Give
-                    her permission to take as much as she wants from your
-                    account ( best we give her access to the highest possible
-                    amount: ethers.constants.MaxUint256 ).
-                  </p>
-                  <p style={{ fontSize: "14px" }}>
-                    HINT: The only help I can give you here is to checkout the
-                    ERC20 token spec.
-                  </p>
-
-                  <VicsClaim />
-                </li>
+                <Step5 />
+                <Step6 provider={provider} />
               </div>
 
               <div className="section">

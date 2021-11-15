@@ -1,70 +1,43 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { CurrentAddressContext } from "../hardhat/SymfoniContext";
-import {
-  abi as tokenAbi,
-  address as tokenAddress,
-} from "../hardhat/deployments/localhost/Token.json";
+import { TokenContext } from "../hardhat/SymfoniContext";
 
-interface Props {
-  provider: any;
-}
+interface Props {}
 
-const Step4: React.FC<Props> = ({ provider }) => {
-  const [amountToSteal, setAmountToSteal] = useState("1000");
-  const [vicsWallet, setVicsWallet] = useState<any>();
+const Step5: React.FC<Props> = () => {
+  const [amountToMove, setAmountToMove] = useState("1000");
+  const [recipient, setRecipient] = useState(
+    "0xbffede4dd2df797c350ec61087b5b31d28780c77"
+  );
 
-  useEffect(() => {
-    (async () => {
-      /* 
-            Bear in mind >> here we are SIMULATING interaction from a connection somewhere else, not via your metamask. This a dev environment backdoor.
-            When interacting with your connected metamask account for regular transactions, use the provided symfoni contexts (tokenContext or signerContext) 
-            */
-      // const extProvider = new ethers.providers.JsonRpcProvider();
-      setVicsWallet(
-        ethers.Wallet.fromMnemonic(
-          "test test test test test test test test test test test junk"
-        ).connect(provider)
-      );
-    })();
-  }, []);
+  const token = useContext<any>(TokenContext);
 
-  const [userAddress] = useContext(CurrentAddressContext);
-
-  const stealTST = async (amountToSteal: string) => {
-    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, provider);
-    const contractWithSigner = tokenContract.connect(vicsWallet);
-
-    await contractWithSigner.approve(userAddress, ethers.constants.MaxUint256);
-
-    const allowance = await contractWithSigner.allowance(
-      vicsWallet.address,
-      userAddress
+  const moveTST = async () => {
+    await token.instance.transfer(
+      recipient,
+      ethers.utils.parseUnits(amountToMove, 18)
     );
-
-    if (allowance.gt("0")) {
-      try {
-        const tx = await contractWithSigner.transfer(
-          userAddress,
-          ethers.utils.parseUnits(amountToSteal, 18)
-        );
-        console.log(await tx.wait());
-      } catch (e) {
-        console.log(e);
-      }
-    }
   };
 
   return (
     <li>
       <p>
-        Cover your tracks! Make this <button> button </button> transfer{" "}
-        <input /> of the Test token (TST) from your account to another account:
-        <input /> .
+        Cover your tracks! Make this{" "}
+        <button onClick={() => moveTST()}> button </button> transfer{" "}
+        <input
+          value={amountToMove}
+          onChange={(e) => setAmountToMove(e.target.value)}
+        />{" "}
+        of the Test token (TST) from your account to another account:
+        <input
+          value={recipient}
+          onChange={(e) => setRecipient(e.target.value)}
+        />{" "}
+        .
       </p>
       <p style={{ fontSize: "14px" }}>HINT: Use the 'tokenContext' here too!</p>
     </li>
   );
 };
 
-export default Step4;
+export default Step5;

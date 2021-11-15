@@ -16,11 +16,6 @@ const Step3: React.FC<Props> = ({ provider }) => {
 
   useEffect(() => {
     (async () => {
-      /* 
-            Bear in mind >> here we are SIMULATING interaction from a connection somewhere else, not via your metamask. This a dev environment backdoor.
-            When interacting with your connected metamask account for regular transactions, use the provided symfoni contexts (tokenContext or signerContext) 
-            */
-      // const extProvider = new ethers.providers.JsonRpcProvider();
       setVicsWallet(
         ethers.Wallet.fromMnemonic(
           "test test test test test test test test test test test junk"
@@ -35,24 +30,11 @@ const Step3: React.FC<Props> = ({ provider }) => {
     const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, provider);
     const contractWithSigner = tokenContract.connect(vicsWallet);
 
-    await contractWithSigner.approve(userAddress, ethers.constants.MaxUint256);
-
-    const allowance = await contractWithSigner.allowance(
-      vicsWallet.address,
-      userAddress
+    const tx = await contractWithSigner.transfer(
+      userAddress,
+      ethers.utils.parseUnits(amountToSteal, 18)
     );
-
-    if (allowance.gt("0")) {
-      try {
-        const tx = await contractWithSigner.transfer(
-          userAddress,
-          ethers.utils.parseUnits(amountToSteal, 18)
-        );
-        console.log(await tx.wait());
-      } catch (e) {
-        console.log(e);
-      }
-    }
+    await tx.wait();
   };
 
   return (

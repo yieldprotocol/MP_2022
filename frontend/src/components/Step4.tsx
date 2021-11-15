@@ -1,59 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { CurrentAddressContext } from "../hardhat/SymfoniContext";
-import {
-  abi as tokenAbi,
-  address as tokenAddress,
-} from "../hardhat/deployments/localhost/Token.json";
+import { CurrentAddressContext, TokenContext } from "../hardhat/SymfoniContext";
 
 interface Props {
   provider: any;
 }
 
 const Step4: React.FC<Props> = ({ provider }) => {
-  const [amountToSteal, setAmountToSteal] = useState("1000");
-  const [vicsWallet, setVicsWallet] = useState<any>();
-
-  useEffect(() => {
-    (async () => {
-      /* 
-            Bear in mind >> here we are SIMULATING interaction from a connection somewhere else, not via your metamask. This a dev environment backdoor.
-            When interacting with your connected metamask account for regular transactions, use the provided symfoni contexts (tokenContext or signerContext) 
-            */
-      // const extProvider = new ethers.providers.JsonRpcProvider();
-      setVicsWallet(
-        ethers.Wallet.fromMnemonic(
-          "test test test test test test test test test test test junk"
-        ).connect(provider)
-      );
-    })();
-  }, []);
-
   const [userAddress] = useContext(CurrentAddressContext);
 
-  const stealTST = async (amountToSteal: string) => {
-    const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, provider);
-    const contractWithSigner = tokenContract.connect(vicsWallet);
+  const [balance, setBalance] = useState<any>(null);
+  const [balanceLoading, setBalanceLoading] = useState(true);
 
-    await contractWithSigner.approve(userAddress, ethers.constants.MaxUint256);
+  const token = useContext<any>(TokenContext);
 
-    const allowance = await contractWithSigner.allowance(
-      vicsWallet.address,
-      userAddress
-    );
-
-    if (allowance.gt("0")) {
-      try {
-        const tx = await contractWithSigner.transfer(
-          userAddress,
-          ethers.utils.parseUnits(amountToSteal, 18)
-        );
-        console.log(await tx.wait());
-      } catch (e) {
-        console.log(e);
-      }
+  const fetchBalance = useCallback(async () => {
+    setBalanceLoading(true);
+    if (token?.instance) {
+      const balance = await token.instance.balanceOf(userAddress);
+      const balanceFormatted = ethers.utils.formatUnits(balance.toString());
+      setBalance(balanceFormatted.toString());
+      setBalanceLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
+
+  useEffect(() => {
+    provider.on("block", fetchBalance);
+    return () => {
+      provider.off("block", fetchBalance);
+    };
+  }, [fetchBalance]);
 
   return (
     <li>
@@ -66,8 +46,7 @@ const Step4: React.FC<Props> = ({ provider }) => {
           border: "2px solid white",
         }}
       >
-        {" "}
-        0 TST{" "}
+        <p>Balance: {balanceLoading ? "..." : balance}</p>
       </div>
 
       <p style={{ fontSize: "14px" }}>

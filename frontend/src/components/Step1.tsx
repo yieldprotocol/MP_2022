@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   CurrentAddressContext,
   SignerContext,
@@ -19,15 +19,23 @@ const Step1: React.FC<Props> = ({ provider }) => {
   const [balance, setBalance] = useState<any>(null);
   const [balanceLoading, setBalanceLoading] = useState(true);
 
+  const fetchBalance = useCallback(async () => {
+    setBalanceLoading(true);
+    const balance = await signer?.getBalance();
+    setBalance(balance ? ethers.utils.formatEther(balance) : null);
+    setBalanceLoading(false);
+  }, []);
+
   useEffect(() => {
-    (async () => {
-      // TODO: trigger this to run every 10 sec
-      setBalanceLoading(true);
-      const balance = await signer?.getBalance();
-      setBalance(balance ? ethers.utils.formatEther(balance) : null);
-      setBalanceLoading(false);
-    })();
+    fetchBalance();
   }, [addressContext]);
+
+  useEffect(() => {
+    provider.on("block", fetchBalance);
+    return () => {
+      provider.off("block", fetchBalance);
+    };
+  }, [fetchBalance]);
 
   const [humanName, setHumanName] = useState<any>(null);
 
@@ -48,9 +56,8 @@ const Step1: React.FC<Props> = ({ provider }) => {
       <div>
         <div>
           <p>
-            {" "}
             Create a new React component to show the account name and ETH
-            balance of the connected wallet.{" "}
+            balance of the connected wallet.
           </p>
         </div>
         <div
