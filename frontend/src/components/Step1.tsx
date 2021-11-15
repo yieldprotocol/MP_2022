@@ -5,12 +5,14 @@ import {
   SignerContext,
 } from "../hardhat/SymfoniContext";
 import Address from "./Address";
+import StepContent from "./StepContent";
 
 interface Props {
   provider: any;
+  className?: any;
 }
 
-const Step1: React.FC<Props> = ({ provider }) => {
+const Step1: React.FC<Props> = ({ provider, className }) => {
   const addressContext = useContext<any>(CurrentAddressContext);
 
   /* HINT: this is how to bring in the signerContext */
@@ -52,32 +54,31 @@ const Step1: React.FC<Props> = ({ provider }) => {
   }, [addressContext]);
 
   return (
-    <li>
+    <li className={className}>
       <div>
-        <div>
-          <p>
-            Create a new React component to show the account name and ETH
-            balance of the connected wallet.
-          </p>
-        </div>
-        <div
-          style={{
-            alignContent: "flex-end",
-            border: "2px solid white",
-          }}
-        >
-          <div>
-            <p>Balance: {balanceLoading ? "..." : balance?.toString()}</p>
-            <p>
-              Address:{" "}
-              <Address address={addressContext[0]} truncateAmount={7} />{" "}
-              {humanName ? ` (${humanName})` : ""}
-            </p>
-          </div>
-        </div>
+        <p className="text-base font-semibold">
+          Create a new React component to show the account name and ETH balance
+          of the connected wallet.
+        </p>
       </div>
-      <p style={{ fontSize: "14px" }}>
-        {" "}
+      <div className="bg-white p-4 my-2 rounded-lg flex flex-col">
+        <span className="mb-4 bg-gray-200 px-2 py-1 rounded-lg">
+          {/* <p className="text-gray-600 font-light text-sm">Address</p> */}
+          <Address
+            className="text-gray-500"
+            address={addressContext[0]}
+            truncateAmount={7}
+          />{" "}
+          {humanName ? ` (${humanName})` : ""}
+        </span>
+        <span>
+          <p className="text-gray-600 font-light text-sm">Balance</p>
+          <p className="font-mono text-green-500 font-bold">
+            {balanceLoading ? "..." : balance?.toString()}
+          </p>
+        </span>
+      </div>
+      <p className="text-sm mt-2">
         (human readable, and dynamically changing would be nice){" "}
       </p>
     </li>

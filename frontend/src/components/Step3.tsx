@@ -5,12 +5,15 @@ import {
   abi as tokenAbi,
   address as tokenAddress,
 } from "../hardhat/deployments/localhost/Token.json";
+import Button from "./Button";
+import Input from "./Input";
 
 interface Props {
   provider: any;
+  className?: string;
 }
 
-const Step3: React.FC<Props> = ({ provider }) => {
+const Step3: React.FC<Props> = ({ provider, className }) => {
   const [amountToSteal, setAmountToSteal] = useState("1000");
   const [vicsWallet, setVicsWallet] = useState<any>();
 
@@ -38,25 +41,25 @@ const Step3: React.FC<Props> = ({ provider }) => {
   };
 
   return (
-    <li>
+    <li className={className}>
       <div>
-        <p> Get some TST (Test Tokens) </p>
+        <p className="text-base font-semibold">Get some TST (Test Tokens)</p>
       </div>
-      <div>
-        <p style={{ fontSize: "14px" }}>
+      <div className="text-sm">
+        <p>
           <strong>I know a someone who has loads,... 🦈 ! </strong>
         </p>
-        <p style={{ fontSize: "14px" }}>
+        <p>
           Vic's account holds a lot of TST. Help yourself to it - she left her
           key under the mat.
         </p>
-        <input
-          placeholder="amount to steal"
+        <Input
+          placeholder="Amount to steal"
           value={amountToSteal}
-          onChange={(e) => setAmountToSteal(e.target.value)}
-        />{" "}
-        <button onClick={() => stealTST(amountToSteal)}> Steal TST!</button>
-        <p style={{ fontSize: "14px" }}>
+          onChange={(e: any) => setAmountToSteal(e.target.value)}
+        />
+        <Button onClick={() => stealTST(amountToSteal)}>Steal TST!</Button>
+        <p className="mt-2 text-sm">
           HINT: If you need some more help here, have a look at the
           'BorrowFromVic' and 'VicsClaim' components ... there are certainly
           enought hints in those to accomplish the task!!

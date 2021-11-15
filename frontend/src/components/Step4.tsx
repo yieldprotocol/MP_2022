@@ -1,12 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { CurrentAddressContext, TokenContext } from "../hardhat/SymfoniContext";
+import { parseBytes32String } from "@ethersproject/strings";
 
 interface Props {
   provider: any;
+  className?: string;
 }
 
-const Step4: React.FC<Props> = ({ provider }) => {
+const Step4: React.FC<Props> = ({ provider, className }) => {
   const [userAddress] = useContext(CurrentAddressContext);
 
   const [balance, setBalance] = useState<any>(null);
@@ -36,22 +38,22 @@ const Step4: React.FC<Props> = ({ provider }) => {
   }, [fetchBalance]);
 
   return (
-    <li>
+    <li className={className}>
       <div>
-        <p> Showoff your stolen TST token balance: </p>
+        <p className="text-base font-semibold">
+          Showoff your stolen TST token balance:{" "}
+        </p>
       </div>
-      <div
-        style={{
-          alignContent: "flex-end",
-          border: "2px solid white",
-        }}
-      >
-        <p>Balance: {balanceLoading ? "..." : balance}</p>
+      <div className="bg-white p-4 my-2 rounded-lg">
+        <p className="text-gray-600 font-light text-sm">Balance</p>
+        <p className="font-mono text-green-500 font-bold">
+          {balanceLoading ? "..." : balance}
+        </p>
       </div>
 
-      <p style={{ fontSize: "14px" }}>
+      <p className="text-sm mt-2">
         HINT: This one should be easy after the last. You should use the
-        'tokenContext' here ( which has wrapped all the ERC20 functionality ).
+        'tokenContext' here (which has wrapped all the ERC20 functionality).
       </p>
     </li>
   );

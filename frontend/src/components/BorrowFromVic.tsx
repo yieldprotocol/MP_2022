@@ -5,6 +5,7 @@ import {
   TokenContext,
   SignerContext,
 } from "../hardhat/SymfoniContext";
+import Button from "./Button";
 
 interface Props {}
 
@@ -61,10 +62,10 @@ export const BorrowFromVic: React.FC<Props> = () => {
     <div>
       <p>
         To help you get started, borrow 1.5 ETH from the notorious loanshark,
-        Vic 🦈 :{" "}
+        Vic 🦈 :
       </p>
       <div>
-        <button onClick={(e) => handleInit()}>Borrow 1.5Eth from Vic</button>
+        <Button onClick={handleInit}>Borrow 1.5Eth from Vic</Button>
       </div>
     </div>
   );
